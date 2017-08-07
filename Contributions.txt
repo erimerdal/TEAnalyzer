@@ -1,0 +1,4 @@
+
+07.08.2017
+1- Changing the Console Based Menu to a more usual tool behaviour which will work with single line commands such as:
+--TEAnalyzer --genes.bed --te.bed --o /home/user/Desktop
