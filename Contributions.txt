@@ -2,3 +2,4 @@
 07.08.2017
 1- Changing the Console Based Menu to a more usual tool behaviour which will work with single line commands such as:
 --TEAnalyzer --genes.bed --te.bed --o /home/user/Desktop
+2- Finding examples to test my program's counting function from Ensembl Database. Opened three mysql databases for human, mouse, and rat. Using -84 format rather than -89 format which is the most recent information because I have BAM files which are designed for -84 format.
