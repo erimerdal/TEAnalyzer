@@ -2,5 +2,15 @@ About Using This Program:
 
   Retrotransposons are genetic elements which can amplify themselves in genome in various ways, working with copy-paste mechanism.
 This program takes the wanted Transposable Elements from user in a .BED file, also takes the genes in a .BED file. 
+
   After taking these files from user, program uses specific tools to search if the retrotransposons take place before,after or in the middle of the gene. This tool basically helps us to see if the transposable element is relevant with the genes given.
-  Tool can be given specific parameters to narrow the search. For example one can change the window length such as 
+  
+  Tool can be given specific parameters to narrow the search. For example one can change the window length such as asymmetric or symmetric. Asymmetric window should be defined left and right with parameters --l for left and --r for right. Symmetic should only take number and use the same number for both side's lengths.
+  
+  Another aspect of this tool is that it can take user given BAM files. If BAM files are given in calling parameters, tool will also count Transposable Elements in BAM files, so the user is able to see if their hypothesis fits in their experimentally tested BAM files. 
+ 
+Parameters:
+  --help will show a small help table to see basic parameters for using the tool. Detailed information about the parameters can be found here.
+  --quit will stop the execution of the tool.
+  For other instructions always start with --TEanalyzer in every call.
+  For giving .BED files, 
