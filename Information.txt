@@ -1,1 +1,6 @@
 About Using This Program:
+
+  Retrotransposons are genetic elements which can amplify themselves in genome in various ways, working with copy-paste mechanism.
+This program takes the wanted Transposable Elements from user in a .BED file, also takes the genes in a .BED file. 
+  After taking these files from user, program uses specific tools to search if the retrotransposons take place before,after or in the middle of the gene. This tool basically helps us to see if the transposable element is relevant with the genes given.
+  Tool can be given specific parameters to narrow the search. For example one can change the window length such as 
