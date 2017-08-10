@@ -9,3 +9,7 @@ Downloaded and placed in my MySql database before for mouse(mus_musculus_84) and
    Plan is that user will be able to download to their own database whichever data and whichever version they want and will be able to use according to their plans.
 2- Started the method calculateP which will take the UpDownInfo.txt and calculate each p-values of the resulted counts of our Transposable Elements.
 3- Started the takeFromSql method in order to make the tool pull the information from the mysql database of the user if asked for.
+10.08.2017
+1- Downloaded and uploaded MySql data from Ensembl for human -84 version for test purposes. Will soon begin to pull necessary information from MySql using the tool, will test accordingly.
+* ftp://ftp.ensembl.org/pub/release-84/mysql/homo_sapiens_core_84_38/ is the website for downloading the same database.
+2- repeat_feature.txt and coord_system.txt are useful for our purposes. Will be taking coordinates from coord_system and merge it with repeat_feature.txt's informations such as start, end, strand, name etc. 
