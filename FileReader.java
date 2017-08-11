@@ -56,12 +56,20 @@ public class FileReader {
   {
     
     Scanner bedReader = new Scanner(System.in);
+    choice.toLowerCase();
+    Scanner choicescan = new Scanner(choice);
+    // Should specifically define what order the input user will give.
 
-    while(! (choice.equals("quit") || choice.equals("QUIT") ))
+    while(choicescan.hasNext())
     {
-    if(choice.equals("--help") || choice.equals("--HELP"))
+    System.out.println(choicescan.next());
+    }    
+    while(! (choice.equals("--quit")))
     {
-     // Need to give the user detailed information about the program and its uses.
+    // Display help chart if user enters --help.
+    if(choice.equals("--help"))
+    {
+     // Gives the user brief information about the program and its uses.
      System.out.println("EXPLANATION");
      System.out.println("___________");
      System.out.println("This tool takes two BED files. First one should be the BED file of genes, second BED file should be Transposable Element's. ");
@@ -69,25 +77,25 @@ public class FileReader {
      System.out.println("Tool will give you an output file named UpDownInfo.txt in your the Destination you give which will include the information about overlaps between Genes and Transposable Elements, also individual and total counts of UP, DOWN and Non-Differentially Expressed Genes.");
      System.out.println("OPTIONS");
      System.out.println("_______");
-     System.out.println("--Tecount --genes.bed --te.bed");
-     System.out.println("--Tecount --genes.bed --te.bed --geneinfo.txt");
-     System.out.println("--Tecount --genes.bed --te.bed --geneinfo.txt --phenodata.txt");
+     System.out.println("--TEanalyzer --genes.bed --te.bed");
+     System.out.println("--TEanalyzer --genes.bed --te.bed --geneinfo.txt");
+     System.out.println("--TEanalyzer --genes.bed --te.bed --geneinfo.txt --phenodata.txt");
      System.out.println("Also you should give the directory to create the output file UpDownCount.");
-     System.out.println("--Tecount --genes.bed --te.bed --o /home/user/Desktop");
+     System.out.println("--TEanalyzer --genes.bed --te.bed --o /home/user/Desktop");
      System.out.println("You should also add right and left strand lengths, depending on asymmetric or" + " symmetric search.");
+     System.out.println("--TEanalyzer --genes.bed --te.bed --geneinfo.txt --a --l 1000 --r 2000");
+     System.out.println("--TEanalyzer --genes.bed --te.bed --geneinfo.txt --s 1000");
      System.out.println("");
+     System.out.print("Find More Detailed Explanation in : https://github.com/erimerdal/TEAnalyzer/blob/master/Information.txt ");
       
     }  // End if 
-    // Choice 2 should also take the classPath and execute bedtools algoritm, 
-    // bedtools window.
-    
-    if(choice.equals("a"))
+    // Should start interpreting user's input.
+
+    else
     {
       
       System.out.println("In order to be able to use Bedtools Function, you must put your 2" + 
 " bed files to desktop and specify their name below. Also the window length.");
-	// WE MIGHT WANT TO USE LEFT ON NEGATIVE STRANDS OR RIGHT ON POSITIVE STRANDS OR BOTH 
-        // IN SOME CASES WE NEED TO DEFINE.
       
       System.out.print("1- Enter TE file's name and extension: ");
       String firstFile = bedReader.next();
@@ -434,7 +442,7 @@ public class FileReader {
            catch(Exception exception)
            { System.out.println("countedTE function exception."); }
           
-
+           calculateP(upDownPrint);
          }
        }).start();
        p.waitFor(); 
@@ -505,7 +513,7 @@ public class FileReader {
            try{
            countedTe = counterTEasym(teList, firstFile, secondFile, leftWidth, rightWidth);
            } catch (Exception e) {
-           }
+          }
 
          }
        }).start();
@@ -532,7 +540,7 @@ public class FileReader {
 
      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    // In this method we find uniquely mapped reads for the user's given raw BAM files. Output in same name so callMultiCov can
-   // Easily find the bams again. Or name something specific.
+   
    public void callSamTools(String[] bamFiles)
    {
 	/**
@@ -646,6 +654,81 @@ public class FileReader {
 
 	return bamFiles;
    }
+   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   public void calculateP(String upDownPrint)
+   {
+	// Here we will call some R scripts from terminal in order to calculate their p-values and later
+	String teName = "";
+	String up = "";
+	String down = "";
+	String nonde = "";
+        // Draw some Barcharts and Heatmaps with the data to visualize our result in another method.
+        // This method will modify updownprint.txt by adding p values for each row.
+	Scanner updownprint = new Scanner(upDownPrint);
+	// Need to keep a line counter and decrease 2 from it in order to obtain number of transposable elements.
+	Scanner linecounter = new Scanner(upDownPrint);
+	int lineCount = 0;
+	while(linecounter.hasNextLine())
+	{
+		lineCount++;
+		linecounter.nextLine();
+	}
+	lineCount = lineCount - 2;
+
+	
+        // Skips null, UP, DOWN and NON-DE.
+	for(int skip = 0; skip < 4; skip++)
+        {
+		updownprint.next();
+	}
+	String RScript = "";
+        for(int lines = 0; lines < lineCount; lines++)
+        {	
+                teName = updownprint.next();
+  		up = updownprint.next();
+		down = updownprint.next();
+		nonde = updownprint.next();
+		final Process callR = Runtime.getRuntime().exec(RScript);
+		Scanner input = new Scanner(new InputStreamReader(callR.getInputStream()));
+	}
+	
+        
+
+        /**
+        
+	
+             Scanner input = new Scanner(new InputStreamReader(multicov.getInputStream()));
+         
+              while((input.hasNextLine()))
+              {     
+                    // Find counts for given TE's and store them.
+                    // System.out.println(input.nextLine());
+		    input.next();
+		    input.next();
+		    input.next();
+		    input.next();
+                    String teName = input.next();
+                    input.next();
+		    input.next();
+		    // You need to change this output depending on how many bam files are entered by user, which is defined as bamFiles.length !!
+		    multiResult += teName + " has " + "\n"; // Enter information of TE, up down or non-de.
+		    for(int i = 0; i < countBams.length; i++)
+		    {
+			countBams[i] = input.next();
+			multiResult += countBams[i] + " counts for BAM" + (i+1) + "\n";
+			
+		    }
+
+		    
+              }   
+        }
+	*/
+   }
+   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   public void takeFromSql(
+
+
+
 
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    // CHANGES WILL BE MADE: 
